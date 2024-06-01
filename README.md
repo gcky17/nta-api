@@ -1,2 +1,2 @@
 # digital-agency
-デジ庁に関わる資産
+国税庁WebAPIへのアクセス
