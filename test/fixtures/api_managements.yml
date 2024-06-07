@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  request: MyText
+  response: MyText
+  count: 1
+  wait-time: 2024-06-07 01:47:34
+  comment: MyString
+
+two:
+  request: MyText
+  response: MyText
+  count: 1
+  wait-time: 2024-06-07 01:47:34
+  comment: MyString

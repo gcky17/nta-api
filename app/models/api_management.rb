@@ -1,0 +1,2 @@
+class ApiManagement < ApplicationRecord
+end

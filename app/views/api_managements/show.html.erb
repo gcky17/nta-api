@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_management %>
+
+<div>
+  <%= link_to "Edit this api management", edit_api_management_path(@api_management) %> |
+  <%= link_to "Back to api managements", api_managements_path %>
+
+  <%= button_to "Destroy this api management", @api_management, method: :delete %>
+</div>

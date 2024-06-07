@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Api managements</h1>
+
+<div id="api_managements">
+  <% @api_managements.each do |api_management| %>
+    <%= render api_management %>
+    <p>
+      <%= link_to "Show this api management", api_management %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New api management", new_api_management_path %>
