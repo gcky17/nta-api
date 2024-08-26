@@ -1,0 +1,119 @@
+
+<p style="color: red"><%= alert %></p>
+
+<div>
+  <%= link_to "Back", :back, class: "ui blue button" %>
+</div>
+
+<%= render plain: @results %>
+
+<div class="ui container">
+  <h1 class="ui header">Search Condition</h1>
+  <div id="inputs">
+    <table class="ui celled selectable table">
+      <thead>
+        <tr>
+          <th>取得期間（開始日）</th>
+          <th>取得期間（終了日）</th>
+          <th>本店所在地（都道府県）</th>
+          <th>ファイル名</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @date_from %></td>
+          <td><%= @date_to %></td>
+          <td><%= @address %></td>
+          <td></td>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ui container">
+  <h1 class="ui header">Result summary</h1>
+  <div id="summary">
+    <table class="ui celled selectable table">
+      <thead>
+        <tr>
+          <th>ファイルデータ数</th>
+          <th>APIデータ数</th>
+          <th>法人番号マッチング数</th>
+          <th>法人情報マッチング数（緑）</th>
+          <th>法人情報アンマッチング数（赤）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= @file_data_cnt %></td>
+          <td><%= @api_data_cnt %></td>
+          <td><%= @match_cnt %></td>
+          <td><%=  %></td>
+          <td><%=  %></td>
+      </tbody>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="ui container">
+  <h1 class="ui header">Result matched</h1>
+  <div id="result">
+    <table class="ui celled selectable table">
+      <thead>
+        <tr>
+          <th>項番</th>
+          <th>対象データ</th>
+          <th>法人番号</th>
+          <th>法人名</th>
+          <th>本店所在地（都道府県）</th>
+          <th>本店所在地（市区町村）</th>
+          <th>本店所在地（番地）</th>
+          <th>代表者名（姓）</th>
+          <th>代表者名（名）</th>
+          <th>代表者名フリガナ（姓）</th>
+          <th>代表者名フリガナ（名）</th>
+          <th>変更履歴</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @results.each.with_index(1) do |result, index| %>
+          <% column_0_class = result[0][0] == result[1][1] ? "positive" : "negative" %>
+          <% column_1_class = result[0][1] == result[1][6] ? "positive" : "negative" %>
+          <% column_2_class = result[0][9] == result[1][9] ? "positive" : "negative" %>
+          <% column_3_class = result[0][3] == result[1][10] ? "positive" : "negative" %>
+          <% column_4_class = result[0][4] == result[1][11] ? "positive" : "negative" %>
+            <tr>
+              <td><%= index %></td>
+              <td>制度所管ファイル</td>
+              <td class="<%= column_0_class %>"><%= result[0][0] %></td>
+              <td class="<%= column_1_class %>"><%= result[0][1] %></td>
+              <td class="<%= column_2_class %>"><%= result[0][9] %></td>
+              <td class="<%= column_3_class %>"><%= result[0][3] %></td>
+              <td class="<%= column_4_class %>"><%= result[0][4] %></td>
+              <td><%= result[0][5] %></td>
+              <td><%= result[0][6] %></td>
+              <td><%= result[0][7] %></td>
+              <td><%= result[0][8] %></td>
+              <td><%= link_to "Click", num_api_api_management_path(no: result[0][0]), class: "ui black button" %></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>国税庁API</td>
+              <td class="<%= column_0_class %>"><%= result[1][1] %></td>
+              <td class="<%= column_1_class %>"><%= result[1][6] %></td>
+              <td class="<%= column_2_class %>"><%= result[1][9] %></td>
+              <td class="<%= column_3_class %>"><%= result[1][10] %></td>
+              <td class="<%= column_4_class %>"><%= result[1][11] %></td>
+              <td class="ui center aligned">-</td>
+              <td class="ui center aligned">-</td>
+              <td class="ui center aligned">-</td>
+              <td class="ui center aligned">-</td>
+              <td><%= link_to "Click", num_api_api_management_path(no: result[1][1]), class: "ui black button" %></td>
+            </tr>
+          <%# end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

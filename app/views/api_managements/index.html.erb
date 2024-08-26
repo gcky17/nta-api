@@ -1,14 +1,54 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Api managements</h1>
-
-<div id="api_managements">
-  <% @api_managements.each do |api_management| %>
-    <%= render api_management %>
-    <p>
-      <%= link_to "Show this api management", api_management %>
-    </p>
-  <% end %>
+<div class="ui modal">
+  <div class="header">
+    Demo for BaseRegistry
+  </div>
+  <div class="content">
+    <div class="description">
+      <p>Click anything.</p>
+    </div>
+  </div>
 </div>
 
-<%= link_to "New api management", new_api_management_path %>
+
+<p style="color: green"><%= notice %></p>
+
+<div class="ui container">
+  <h1 class="ui header">Api managements</h1>
+  <div id="api_managements">
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Request</th>
+          <th>Response</th>
+          <th>Count</th>
+          <th>Waiting time</th>
+          <th>Comment</th>
+          <th>Request time</th>
+          <th>Action</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @api_managements.each do |api_management| %>
+          <tr>
+            <td><%= api_management.request %></td>
+            <td><%= api_management.response.truncate(500) %></td>
+            <td><%= api_management.count %></td>
+            <td><%= api_management.wtime %></td>
+            <td><%= api_management.comment %></td>
+            <td><%= api_management.updated_at %></td>
+            <td><%= link_to "Show", api_management %></td>
+            <td><%= link_to "Send", api_path(api_management.id), class: "ui blue button" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>
+
+<div>
+  <%= link_to "New Request", new_api_management_path, class: "ui blue button" %>
+</div>
+
