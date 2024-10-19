@@ -88,14 +88,31 @@ class ApiManagementsController < ApplicationController
     to = original_to.gsub("/", "-")
     type = params[:type]
     address = params[:address]
-    api_params = { :id => "#{id}", :from => "#{from}", :to => "#{to}", :type => "#{type}", :address => "#{address}" }
+    divide = params[:divide]
+    api_params = { :id => "#{id}", :from => "#{from}", :to => "#{to}", :type => "#{type}", :address => "#{address}", :divide => "#{divide}" }
     uri.query = URI.encode_www_form(api_params)
     res = Net::HTTP.get_response(uri)
     
+    puts res.class
     puts "取得期間APIの返却ステータス"
-    puts res.header
+      puts res.header
     puts "取得期間APIの返却値"
-    puts res.body
+      puts res.body
+    puts "分割数"
+      num_divide = CSV.parse(res.body).first[3].to_i
+      puts num_divide
+
+    # 分割数の分だけAPIを叩いて結合データを作成する
+    combined_res = ""
+    num_divide.times do |i|
+      api_params = { :id => "#{id}", :from => "#{from}", :to => "#{to}", :type => "#{type}", :address => "#{address}", :divide => "#{i + 1}" }
+      uri.query = URI.encode_www_form(api_params)
+      res = Net::HTTP.get_response(uri)
+      combined_res << res.body
+    end
+
+    puts "結合データの全レコード"
+    puts combined_res
 
 #    res.body if res.is_a?(Net::HTTPSuccess)
 
@@ -104,7 +121,7 @@ class ApiManagementsController < ApplicationController
         when '01'
           api_id = set_api_csv_data(res.body)
         when '02'
-          api_id = set_api_csv_data(res.body)
+          api_id = set_api_csv_data(combined_res)
         when '12'
           api_id = set_api_xml_data(res.body)
         else
@@ -176,10 +193,10 @@ class ApiManagementsController < ApplicationController
 
     def set_api_csv_data(data)
 
-      p "Encode Check"
-      p data.encoding
-      p "ASCII 8BIT -> UTF-8"
-      p data.force_encoding("UTF-8").encoding
+      puts "Encode Check"
+        p data.encoding
+      puts "ASCII 8BIT -> UTF-8"
+        p data.force_encoding("UTF-8").encoding
 
       if data
         api_id = SecureRandom.uuid

@@ -1,0 +1,63 @@
+<div class="ui inverted segment">
+  <div class="ui inverted secondary pointing menu">
+    <a class="item active">Home</a>
+    <a class="item">Menu</a>
+    <a class="item">Try it</a>
+  </div>
+</div>
+
+<div class="ui steps">
+  <div class="step">
+    <i class="home icon"></i>
+    <div class="content">
+      <div class="title">Top</div>
+      <div class="description">Select service</div>
+    </div>
+  </div>
+  <div class="active step">
+    <i class="wpforms icon"></i>
+    <div class="content">
+      <div class="title">Preprocess</div>
+      <div class="description">Merge & DL file of MHLW</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <i class="wpforms icon"></i>
+    <div class="content">
+      <div class="title">Input</div>
+      <div class="description">Attach file of MHLW</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <i class="table icon"></i>
+    <div class="content">
+      <div class="title">Result</div>
+      <div class="description">See difference</div>
+    </div>
+  </div>
+</div>
+
+<h1>厚生労働省　デモ画面</h1>
+<p class="ui dividing header">突合用のデータファイルを作成する</p>
+
+<p style="color: red"><%= alert %></p>
+
+<%# content_for :js do %>
+  <%#= javascript_import_module_tag "search" %>
+<%# end %>
+
+<%= form_with url: pre_merge_dl_term_mhlw_search_index_path, local: true, multipart: true, class: "ui form" do |form| %>
+  <div class="ui error message"></div>
+  <div>
+    <%= form.label :csv_file1, "7月までのマスターデータ" %>
+    <%= form.file_field :csv_file1 %>
+  </div>
+  <div>
+    <%= form.label :csv_file2, "8月の差分データ" %>
+    <%= form.file_field :csv_file2 %>
+  </div>
+  <div>
+    <%= form.submit "ダウンロード", class: "ui submit primary" %>
+  </div>
+<% end %>
+

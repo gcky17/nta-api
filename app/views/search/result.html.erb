@@ -30,6 +30,8 @@
   </div>
 </div>
 
+<br>
+
 <div class="ui container">
   <h1 class="ui header">Result summary</h1>
   <div id="summary">
@@ -48,13 +50,15 @@
           <td><%= @file_data_cnt %></td>
           <td><%= @api_data_cnt %></td>
           <td><%= @match_cnt %></td>
-          <td><%=  %></td>
-          <td><%=  %></td>
+          <td><%= @match_item_cnt %></td>
+          <td><%= @unmatch_item_cnt %></td>
       </tbody>
       </tbody>
     </table>
   </div>
 </div>
+
+<br>
 
 <div class="ui container">
   <h1 class="ui header">Result matched</h1>

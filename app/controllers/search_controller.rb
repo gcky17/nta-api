@@ -3,11 +3,64 @@ class SearchController < ApplicationController
   def index
   end
 
+  # 中企庁突合用
   def term
-    keyword = params[:keyword]
-    uploaded_file = params[:file]
+#    keyword = params[:keyword]
+#    uploaded_file = params[:file]
 
 #    response = ApiService
+  end
+
+  # 厚労省事前ファイルアップロード
+  def pre_term_mhlw
+
+  end
+
+  # 厚労省事前ファイルマージとダウンロード
+  def pre_merge_dl_term_mhlw
+    csv_file1 = params[:csv_file1]
+    csv_file2 = params[:csv_file2]
+
+#    csv1 = CSV.read(csv_file1.path, encoding: 'Shift_JIS:UTF-8', headers: true)
+#    csv2 = CSV.read(csv_file2.path, encoding: 'Shift_JIS:UTF-8', headers: true).force_encoding("UTF-8")
+    csv1 = CSV.read(csv_file1.path, headers: true)
+    csv2 = CSV.read(csv_file2.path, headers: true)
+
+    puts "CSV1 Check!"
+      p csv1
+    puts "CSV2 Check!"
+      p csv2
+
+    merged_data = merge_csv_files(csv1, csv2)
+
+    respond_to do |format|
+      format.csv { send_data generate_csv(merged_data), filename: "merged.csv" }
+    end
+  end
+
+  def merge_csv_files(csv1, csv2)
+#    combined = csv1 + csv2
+    combined = csv1.merge(csv2)
+
+    grouped = combined.group_by { |row| row['法人番号']}
+    merged = grouped.map do |_, records|
+      records.max_by { |row| Data.parse(row['更新日時']) }
+    end
+    merged
+  end
+
+  def generate_csv(data)
+    CSV.generate(headers: true) do |csv|
+      csv << ['法人番号', '会社名称', '会社住所', '更新日時']
+      data.each do |row|
+        csv << row
+      end
+    end
+  end
+
+  # 厚労省突合用
+  def term_mhlw
+    
   end
 
   def name
@@ -52,6 +105,8 @@ class SearchController < ApplicationController
     @file_data_cnt = file_data.count
     @api_data_cnt = api_data.count
     @match_cnt = @results.count
+    @match_item_cnt = compare_matched(@results)
+    @unmatch_item_cnt = compare_unmatched(@results)
   end
 
   def result_detail
@@ -102,8 +157,31 @@ class SearchController < ApplicationController
     return combined_data
   end
 
+  def compare_matched(combined_data)
+    matched_cnt = 0
+    combined_data.each do |result|
+      if result[0][0] == result[1][1] && result[0][1] == result[1][6] && result[0][9] == result[1][9] && result[0][3] == result[1][10] && result[0][4] == result[1][11]
+        matched_cnt += 1
+      end
+    end
+    return matched_cnt
+  end
+
+  def compare_unmatched(combined_data)
+    unmatched_cnt = 0
+    combined_data.each do |result|
+      unless result[0][0] == result[1][1] && result[0][1] == result[1][6] && result[0][9] == result[1][9] && result[0][3] == result[1][10] && result[0][4] == result[1][11]
+        unmatched_cnt += 1
+      end
+    end
+    return unmatched_cnt
+  end
+
   def convert_pref(pref_code)
-    case pref_code
+    # 1 -> 01のように2桁に揃える
+    formatted_code = sprintf('%02d', pref_code.to_i)
+
+    case formatted_code
       when "01"
         return "北海道"
       when "02"

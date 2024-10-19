@@ -1,2 +1,26 @@
 <h1>Search#index</h1>
 <p>Find me in app/views/search/index.html.erb</p>
+
+<div class="ui placeholder segment">
+  <div class="ui two column stackable center aligned grid">
+    <div class="ui vertical divider">Or</div>
+    <div class="middle aligned row">
+      <div class="column">
+        <div class="ui icon header">
+          中小企業庁用
+        </div>
+        <div>
+          <%= link_to '入力画面へ', search_term_path, class: 'ui button primary' %>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui icon header">
+          厚生労働省用
+        </div>
+        <div>
+          <%= link_to '入力画面へ', search_pre_term_mhlw_path, class: 'ui button primary' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

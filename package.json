@@ -1,6 +1,13 @@
 {
   "dependencies": {
+    "@rails/webpacker": "5.4.4",
     "fomantic-ui": "^2.9.3",
-    "jquery": "^3.7.1"
+    "fomantic-ui-css": "^2.9.3",
+    "jquery": "^3.7.1",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^3"
   }
 }

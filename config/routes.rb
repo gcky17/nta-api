@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   get 'search/index'
   get 'search/term'
+  get 'search/pre_term_mhlw'
+  get 'search/term_mhlw'
   get 'search/name'
   get 'search/number'
   get 'search/result'
@@ -17,6 +19,13 @@ Rails.application.routes.draw do
 
   get '/api_managements/api/:id', to: 'api_managements#api', as: 'api'
   get '/api_managements/num_api:/id', to: 'api_managements#num_api', as: 'num_api_api_management'
+
+# 厚労省用のデータファイルを前処理する
+  resources :search do
+    collection do
+      post 'pre_merge_dl_term_mhlw'
+    end
+  end
 
 # 国税庁APIから取得期間でデータ取得する
   resources :api_managements do

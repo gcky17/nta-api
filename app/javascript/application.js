@@ -12,6 +12,9 @@ import "jquery"
 import "semantic-ui"
 // import "fomantic-ui/dist/semantic.min.css"
 // import "fomantic-ui/dist/semantic.min.js"
+//import "fomantic-ui-css/semantic.min.js"
+//import "fomantic-ui-css/semantic.min.css"
+//import $ from "jquery"
 
 $(function() {
   console.log("Application.js OK")
@@ -29,6 +32,22 @@ $(document).on('turbolinks:load', function() {
     on: 'hover'
   });
 })
+
+//fomantic-uiで開始日・終了日のカレンダー表示
+$(document).on('turbolinks:load', function() {
+  $('.ui.calendar').calendar({
+    type: 'date',
+    formatter: {
+      date: function (date, settings) {
+        if (!date) return '';
+        var year = date.getFullYear();
+        var month = ('0' + (date.getMonth() + 1)).slice(-2);
+        var day = ('0' + date.getDate()).slice(-2);
+        return year + '-' + month + '-' + day;
+      }
+    }
+  });
+});
 
 //Semantic-uiのvalidation check
 $('.ui.form').
